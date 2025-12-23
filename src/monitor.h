@@ -1,0 +1,45 @@
+/*
+ *  Project:    moba-connector
+ *
+ *  Copyright (C) 2022 Stefan Paproth <pappi-@gmx.de>
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program. If not, see <https://www.gnu.org/licenses/agpl.txt>.
+ *
+ */
+
+#pragma once
+
+#include <boost/circular_buffer.hpp>
+#include <moba-common/loggerprefix.h>
+#include <moba-common/screen.h>
+
+#include "moba/systemmessages.h"
+
+class Monitor final {
+public:
+    void appendAction(const std::string &action, const std::string &message);
+
+    void appendAction(moba::LogLevel level, const std::string &action);
+
+    void printException(const std::string &where, const std::string &what);
+
+    void printStatus(const std::string &status);
+
+private:
+    std::mutex m;
+    boost::circular_buffer<std::string> actions{20};
+    boost::circular_buffer<std::string> canBusActions{20};
+};
+
+using MonitorPtr = std::shared_ptr<Monitor>;

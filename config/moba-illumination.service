@@ -1,0 +1,11 @@
+[Unit]
+Description=moba illumination daemon
+
+[Service]
+Type=simple
+ExecStart=moba-illumination
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-abort
+
+[Install]
+WantedBy=default.target
